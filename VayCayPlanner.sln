@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VayCayPlannerWeb", "VayCayPlannerWeb\VayCayPlannerWeb.csproj", "{A0DE43BB-DC33-43B1-9CFA-BC90ECBFEEA9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A0DE43BB-DC33-43B1-9CFA-BC90ECBFEEA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0DE43BB-DC33-43B1-9CFA-BC90ECBFEEA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0DE43BB-DC33-43B1-9CFA-BC90ECBFEEA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0DE43BB-DC33-43B1-9CFA-BC90ECBFEEA9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F5D8B224-C281-4433-B05A-545A4B9DB4C4}
+	EndGlobalSection
+EndGlobal
