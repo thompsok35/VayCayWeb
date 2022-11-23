@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VayCayPlannerWeb.Data;
 
@@ -11,9 +12,10 @@ using VayCayPlannerWeb.Data;
 namespace VayCayPlannerWeb.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221123184519_Added packages and changed traveler roleId to PrimaryRoleId")]
+    partial class AddedpackagesandchangedtravelerroleIdtoPrimaryRoleId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -607,7 +609,7 @@ namespace VayCayPlannerWeb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("BookingDate")
+                    b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("BookingNumber")
@@ -622,28 +624,28 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("ExtensionDueDate")
+                    b.Property<DateTime>("ExtensionDueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("ExtensionsCost")
+                    b.Property<decimal>("ExtensionsCost")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Guests")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("InsuranceCost")
+                    b.Property<decimal>("InsuranceCost")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("InsuranceDueDate")
+                    b.Property<DateTime>("InsuranceDueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("PackageCost")
+                    b.Property<decimal>("PackageCost")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("PackageDueDate")
+                    b.Property<DateTime>("PackageDueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PackageLink")
@@ -652,7 +654,7 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.Property<string>("PackageName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PackageTypeId")
+                    b.Property<int>("PackageTypeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")

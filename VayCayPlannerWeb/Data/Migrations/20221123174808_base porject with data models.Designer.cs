@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VayCayPlannerWeb.Data;
 
@@ -11,9 +12,10 @@ using VayCayPlannerWeb.Data;
 namespace VayCayPlannerWeb.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221123174808_base porject with data models")]
+    partial class baseporjectwithdatamodels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -479,10 +481,10 @@ namespace VayCayPlannerWeb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CheckInDate")
+                    b.Property<DateTime>("CheckInDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("CheckOutDate")
+                    b.Property<DateTime>("CheckOutDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("CleaningFees")
@@ -599,73 +601,6 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.ToTable("MealTypes");
                 });
 
-            modelBuilder.Entity("VayCayPlannerWeb.Data.Models.Package", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime?>("BookingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("BookingNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ExtensionDueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("ExtensionsCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Guests")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("InsuranceCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("InsuranceDueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("PackageCost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("PackageDueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PackageLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PackageName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PackageTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("isAllinclusive")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Packages");
-                });
-
             modelBuilder.Entity("VayCayPlannerWeb.Data.Models.Transport", b =>
                 {
                     b.Property<int>("Id")
@@ -779,7 +714,7 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.Property<int?>("PrimaryGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PrimaryRoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<bool>("isActive")
