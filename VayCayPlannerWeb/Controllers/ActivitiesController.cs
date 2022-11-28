@@ -2,98 +2,93 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VayCayPlannerWeb.Data;
 using VayCayPlannerWeb.Data.Models;
-using VayCayPlannerWeb.Models.ViewModels;
 
 namespace VayCayPlannerWeb.Controllers
 {
-    public class TravelersController : Controller
+    public class ActivitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public TravelersController(ApplicationDbContext context, IMapper mapper)
+        public ActivitiesController(ApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        // GET: Travelers
+        // GET: Activities
         public async Task<IActionResult> Index()
         {
-            var travelers = _mapper.Map<List<Traveler_vm>>(await _context.Travelers.ToListAsync());
-            return View(travelers);
+              return View(await _context.Activities.ToListAsync());
         }
 
-        // GET: Travelers/Details/5
+        // GET: Activities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Travelers == null)
+            if (id == null || _context.Activities == null)
             {
                 return NotFound();
             }
 
-            var traveler = await _context.Travelers
+            var activity = await _context.Activities
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (traveler == null)
+            if (activity == null)
             {
                 return NotFound();
             }
 
-            return View(traveler);
+            return View(activity);
         }
 
-        // GET: Travelers/Create
+        // GET: Activities/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Travelers/Create
+        // POST: Activities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,EmailAddress,Mobile_Number,isActive,RoleId,PrimaryGroupId,Id,CreatedDate,ModifiedDate")] Traveler traveler)
+        public async Task<IActionResult> Create([Bind("ActivityName,ActivityDescription,includesTransport,isPerPerson,CostPerPerson,TotalCost,StartTime,EndTime,Duration,WebLink,Id,CreatedDate,ModifiedDate")] Activity activity)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(traveler);
+                _context.Add(activity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(traveler);
+            return View(activity);
         }
 
-        // GET: Travelers/Edit/5
+        // GET: Activities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Travelers == null)
+            if (id == null || _context.Activities == null)
             {
                 return NotFound();
             }
 
-            var traveler = await _context.Travelers.FindAsync(id);
-            if (traveler == null)
+            var activity = await _context.Activities.FindAsync(id);
+            if (activity == null)
             {
                 return NotFound();
             }
-            return View(traveler);
+            return View(activity);
         }
 
-        // POST: Travelers/Edit/5
+        // POST: Activities/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FirstName,LastName,EmailAddress,Mobile_Number,isActive,RoleId,PrimaryGroupId,Id,CreatedDate,ModifiedDate")] Traveler traveler)
+        public async Task<IActionResult> Edit(int id, [Bind("ActivityName,ActivityDescription,includesTransport,isPerPerson,CostPerPerson,TotalCost,StartTime,EndTime,Duration,WebLink,Id,CreatedDate,ModifiedDate")] Activity activity)
         {
-            if (id != traveler.Id)
+            if (id != activity.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace VayCayPlannerWeb.Controllers
             {
                 try
                 {
-                    _context.Update(traveler);
+                    _context.Update(activity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TravelerExists(traveler.Id))
+                    if (!ActivityExists(activity.Id))
                     {
                         return NotFound();
                     }
@@ -118,49 +113,49 @@ namespace VayCayPlannerWeb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(traveler);
+            return View(activity);
         }
 
-        // GET: Travelers/Delete/5
+        // GET: Activities/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Travelers == null)
+            if (id == null || _context.Activities == null)
             {
                 return NotFound();
             }
 
-            var traveler = await _context.Travelers
+            var activity = await _context.Activities
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (traveler == null)
+            if (activity == null)
             {
                 return NotFound();
             }
 
-            return View(traveler);
+            return View(activity);
         }
 
-        // POST: Travelers/Delete/5
+        // POST: Activities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Travelers == null)
+            if (_context.Activities == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Travelers'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Activities'  is null.");
             }
-            var traveler = await _context.Travelers.FindAsync(id);
-            if (traveler != null)
+            var activity = await _context.Activities.FindAsync(id);
+            if (activity != null)
             {
-                _context.Travelers.Remove(traveler);
+                _context.Activities.Remove(activity);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TravelerExists(int id)
+        private bool ActivityExists(int id)
         {
-          return _context.Travelers.Any(e => e.Id == id);
+          return _context.Activities.Any(e => e.Id == id);
         }
     }
 }

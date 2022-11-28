@@ -20,11 +20,12 @@ namespace VayCayPlannerWeb.Data.Models
         [ForeignKey("TransportTypeId")]
         public TransportType? TransportType { get; set; }
         public int TransportTypeId { get; set; }
+        //public TransportType? TransportName { get; set; }
 
         [ForeignKey("DestinationId")]        
         public int DestinationId { get; set; }
         public Destination? ArrivalDestination { get; set; }
-        
+        //public Destination? ArrivalDestinationCityName { get; set; }
 
 
     }

@@ -22,12 +22,22 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Plan a Trip
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-controller="Trips" asp-action="Create">Add a Trip</a></li>
+                                <li><a class="dropdown-item" asp-controller="Travelers" asp-action="Create">Add Travelers</a></li>
+                                <li><a class="dropdown-item" href="#">Travel Groups</a></li>
+                                <li><a class="dropdown-item" asp-controller="Destinations" asp-action="Create">Add Destinations</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Packages" asp-action="Create">Add Packages</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Trips
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" asp-controller="Trips" asp-action="Index">Trips</a></li>
@@ -43,9 +53,9 @@
                                 Destinations
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Transports</a></li>
-                                <li><a class="dropdown-item" href="#">Lodgings</a></li>
-                                <li><a class="dropdown-item" href="#">Activities</a></li>
+                                <li><a class="dropdown-item" asp-controller="Transports" asp-action="Index">Transports</a></li>
+                                <li><a class="dropdown-item" asp-controller="Lodgings" asp-action="Index">Lodgings</a></li>
+                                <li><a class="dropdown-item" asp-controller="Activities" asp-action="Index">Activities</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -74,13 +84,26 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Be Prepared
+                                Preparation
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="#">Documents</a></li>
                                 <li><a class="dropdown-item" href="#">Deadlines</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="#">Tasks</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Administration
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-controller="TransportTypes" asp-action="Index">TransportTypes</a></li>
+                                <li><a class="dropdown-item" asp-controller="Travelers" asp-action="Index">Travelers</a></li>
+                                <li><a class="dropdown-item" href="#">Travel Groups</a></li>
+                                <li><a class="dropdown-item" asp-controller="Destinations" asp-action="Index">Destinations</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Packages" asp-action="Index">Packages</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -100,8 +123,11 @@
             &copy; 2022 - VayCayPlannerWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+    @*order matters*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/sweetalert/sweetalert.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

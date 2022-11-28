@@ -1,14 +1,13 @@
-﻿@*@model VayCayPlannerWeb.Data.Models.Trip*@
-@model VayCayPlannerWeb.Models.ViewModels.Trip_vm
+﻿@model VayCayPlannerWeb.Data.Models.Lodging
 
 @{
-    ViewData["Title"] = "Trip Details";
+    ViewData["Title"] = "Details";
 }
 
-<h1>Details of @Model.Name</h1>
+<h1>Details</h1>
 
 <div>
-    @*<h4>Trip</h4>*@
+    <h4>Lodging</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -18,48 +17,54 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.CheckInDate)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.CheckInDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
+            @Html.DisplayNameFor(model => model.CheckOutDate)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
+            @Html.DisplayFor(model => model.CheckOutDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
+            @Html.DisplayNameFor(model => model.MaxOccupancy)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
+            @Html.DisplayFor(model => model.MaxOccupancy)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
+            @Html.DisplayNameFor(model => model.Nights)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
+            @Html.DisplayFor(model => model.Nights)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DepartInDays)
+            @Html.DisplayNameFor(model => model.CleaningFees)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DepartInDays)
+            @Html.DisplayFor(model => model.CleaningFees)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalTravelers)
+            @Html.DisplayNameFor(model => model.OtherFees)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalTravelers)
+            @Html.DisplayFor(model => model.OtherFees)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalDestinations)
+            @Html.DisplayNameFor(model => model.TotalCost)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalDestinations)
+            @Html.DisplayFor(model => model.TotalCost)
         </dd>
-@*        <dt class = "col-sm-2">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WebLink)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WebLink)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedDate)
         </dt>
         <dd class = "col-sm-10">
@@ -70,7 +75,7 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ModifiedDate)
-        </dd>*@
+        </dd>
     </dl>
 </div>
 <div>

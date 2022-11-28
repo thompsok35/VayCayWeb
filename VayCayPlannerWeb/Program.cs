@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using VayCayPlannerWeb.Data;
 using VayCayPlannerWeb.Data.Extensions;
+using AutoMapper;
+using VayCayPlannerWeb.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 //TODO: Change the default 'IdentityUser' to the extended user class 'Subscriber'
 builder.Services.AddDefaultIdentity<Subscriber>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
