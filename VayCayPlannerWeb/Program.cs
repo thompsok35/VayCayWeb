@@ -4,10 +4,12 @@ using VayCayPlannerWeb.Data;
 using VayCayPlannerWeb.Data.Extensions;
 using AutoMapper;
 using VayCayPlannerWeb.Configuration;
+using VayCayPlannerWeb.Contracts;
+using VayCayPlannerWeb.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
+//TODO: Dependency Inject the Services:
+//TODO: Register the Database context.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -17,6 +19,11 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<Subscriber>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+//TODO: Register the repositories
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<ITripRepository, TripRepository>();
+
+//TODO: Register the AutoMapper
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddControllersWithViews();

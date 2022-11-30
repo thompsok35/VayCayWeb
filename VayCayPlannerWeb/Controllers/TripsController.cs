@@ -7,40 +7,41 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using VayCayPlannerWeb.Contracts;
 using VayCayPlannerWeb.Data;
 using VayCayPlannerWeb.Data.Models;
+using VayCayPlannerWeb.Data.Repositories;
 using VayCayPlannerWeb.Models.ViewModels;
 
 namespace VayCayPlannerWeb.Controllers
 {
     public class TripsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITripRepository _context;
         private readonly IMapper _mapper;
 
-        public TripsController(ApplicationDbContext context, IMapper mapper)
+        public TripsController(ITripRepository tripRepository, IMapper mapper)
         {
-            _context = context;
+            _context = tripRepository;
             _mapper = mapper;
         }
 
         // GET: Trips
         public async Task<IActionResult> Index()
         {
-            var trips = _mapper.Map<List<Trip_vm>>(await _context.Trips.ToListAsync());
+            var trips = _mapper.Map<List<Trip_vm>>(await _context.GetAllAsync());
             return View(trips);
         }
 
         // GET: Trips/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Trips == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var trip = await _context.Trips
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var trip = await _context.GetAsync(id.Value);
             if (trip == null)
             {
                 return NotFound();
@@ -63,12 +64,10 @@ namespace VayCayPlannerWeb.Controllers
         //public async Task<IActionResult> Create([Bind("Name,Description,StartDate,EndDate,Duration,DepartInDays,TotalTravelers,TotalDestinations,Id,CreatedDate,ModifiedDate")] Trip trip)
         public async Task<IActionResult> Create(Trip_vm trip_vm)
         {
-            //
-            var trip = _mapper.Map<Trip>(trip_vm);
             if (ModelState.IsValid)
             {
-                _context.Add(trip);
-                await _context.SaveChangesAsync();
+                var trip = _mapper.Map<Trip>(trip_vm);
+                await _context.AddAsync(trip);
                 return RedirectToAction(nameof(Index));
             }
             return View(trip_vm);
@@ -77,12 +76,12 @@ namespace VayCayPlannerWeb.Controllers
         // GET: Trips/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Trips == null)
+            if (id == null)
             {
                 return NotFound();
             }
             //Get the record from the DB with the data model
-            var trip = await _context.Trips.FindAsync(id);
+            var trip = await _context.GetAsync(id.Value);
             if (trip == null)
             {
                 return NotFound();
@@ -109,12 +108,12 @@ namespace VayCayPlannerWeb.Controllers
                 try
                 {
                     var trip = _mapper.Map<Trip>(trip_vm);
-                    _context.Update(trip);
-                    await _context.SaveChangesAsync();
+                    await _context.UpdateAsync(trip);
+                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TripExists(trip_vm.Id))
+                    if (! await TripExists(trip_vm.Id))
                     {
                         return NotFound();
                     }
@@ -129,46 +128,40 @@ namespace VayCayPlannerWeb.Controllers
         }
 
         // GET: Trips/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Trips == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var trip = await _context.Trips
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (trip == null)
-            {
-                return NotFound();
-            }
-            //Return the record with the View Model
-            var trip_vm = _mapper.Map<Trip_vm>(trip);
-            return View(trip_vm);
-        }
+        //    var trip = await _context.DeleteAsync(id.Value);
+        //    if (trip == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    //Return the record with the View Model
+        //    var trip_vm = _mapper.Map<Trip_vm>(trip);
+        //    return View(trip_vm);
+        //}
 
         // POST: Trips/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Trips == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Trips'  is null.");
-            }
-            var trip = await _context.Trips.FindAsync(id);
+            var trip = await _context.GetAsync(id);
             if (trip != null)
             {
-                _context.Trips.Remove(trip);
-            }
-            
-            await _context.SaveChangesAsync();
+                await _context.DeleteAsync(id);
+            }           
+
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TripExists(int id)
+        private async Task<bool> TripExists(int id)
         {
-          return _context.Trips.Any(e => e.Id == id);
+          return await _context.Exists(id);
         }
     }
 }
