@@ -26,5 +26,6 @@ namespace VayCayPlannerWeb.Data.Extensions
         public DateTime DateJoined { get; set; }
         public bool isActive { get; set; }
         public bool isTraveler { get; set; }
+        public int? TravelerId { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VayCayPlannerWeb.Data;
 
@@ -11,9 +12,10 @@ using VayCayPlannerWeb.Data;
 namespace VayCayPlannerWeb.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201222056_added a travelerId to the subscriber and a tripId to a destination")]
+    partial class addedatravelerIdtothesubscriberandatripIdtoadestination
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,29 +49,6 @@ namespace VayCayPlannerWeb.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "06946e55-f70a-4267-b611-aba9fecccbcb",
-                            ConcurrencyStamp = "eb3fe01a-c043-4f69-8116-c35df7672568",
-                            Name = "root",
-                            NormalizedName = "ROOT"
-                        },
-                        new
-                        {
-                            Id = "06946e55-f70a-4267-b611-aba9feccabcf",
-                            ConcurrencyStamp = "0b4e581d-ea47-436f-8ba0-fe023201d67e",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "06946e55-f70a-4267-b611-aba9fecacbcb",
-                            ConcurrencyStamp = "f3025cda-c571-41cb-8932-30154e4cfe9c",
-                            Name = "TripManager",
-                            NormalizedName = "TRIPMANAGER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -159,13 +138,6 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "06946e55-c69a-4267-b611-aba9fecccbcb",
-                            RoleId = "06946e55-f70a-4267-b611-aba9fecccbcb"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -299,27 +271,6 @@ namespace VayCayPlannerWeb.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "06946e45-c69a-4367-b611-aba9fecccbcb",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "8ee416c4-b4d3-410f-88cd-5a04205fbe04",
-                            DateJoined = new DateTime(2022, 12, 3, 11, 48, 22, 79, DateTimeKind.Local).AddTicks(8424),
-                            Email = "root@localhost.com",
-                            EmailConfirmed = true,
-                            FirstName = "System",
-                            LastName = "Root",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ROOT@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOLMgOyk2rpIPBykByzgaUrstaR3SRdJ4QgB/Gt4wAbBZF5tV+vuT1y0pnhANozRsQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "fc6cec6a-0240-4463-9eb9-180bd547307a",
-                            TwoFactorEnabled = false,
-                            isActive = false,
-                            isTraveler = false
-                        });
                 });
 
             modelBuilder.Entity("VayCayPlannerWeb.Data.Models.Activity", b =>

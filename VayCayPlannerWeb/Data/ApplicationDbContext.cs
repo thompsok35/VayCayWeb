@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using VayCayPlannerWeb.Data.Models;
 using VayCayPlannerWeb.Data.Extensions;
+using VayCayPlannerWeb.Configurations.Entities;
 
 namespace VayCayPlannerWeb.Data
 {
@@ -11,7 +12,8 @@ namespace VayCayPlannerWeb.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         { }
-                    //Pluralize here so the table names get created correctly in the database
+
+        //Pluralize here so the table names get created correctly in the database
         public DbSet<Trip> Trips { get; set; }
         public DbSet<TripCostSummary> TripCostSummaries { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
@@ -29,14 +31,12 @@ namespace VayCayPlannerWeb.Data
         public DbSet<Transport> Transports { get; set; }
         public DbSet<TransportType> TransportTypes { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder builder)
-        //{
-        //    base.OnModelCreating(builder);
-
-        //    ModelBuilder.Entity<Transport>(entity =>
-        //    {
-        //        //.has
-        //    });
-        //}
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new RoleSeedConfiguration());
+            builder.ApplyConfiguration(new UserSeedConfiguration());
+            builder.ApplyConfiguration(new UserRoleSeedConfiguration());
+        }
     }
 }

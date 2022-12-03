@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VayCayPlannerWeb.Data;
 
@@ -11,9 +12,10 @@ using VayCayPlannerWeb.Data;
 namespace VayCayPlannerWeb.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221202025952_added identity users and roles")]
+    partial class addedidentityusersandroles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,21 +54,21 @@ namespace VayCayPlannerWeb.Data.Migrations
                         new
                         {
                             Id = "06946e55-f70a-4267-b611-aba9fecccbcb",
-                            ConcurrencyStamp = "eb3fe01a-c043-4f69-8116-c35df7672568",
+                            ConcurrencyStamp = "76cd575c-a768-478c-bb2e-125c48696ec9",
                             Name = "root",
                             NormalizedName = "ROOT"
                         },
                         new
                         {
                             Id = "06946e55-f70a-4267-b611-aba9feccabcf",
-                            ConcurrencyStamp = "0b4e581d-ea47-436f-8ba0-fe023201d67e",
+                            ConcurrencyStamp = "dcc57869-ba4d-4fee-96f1-24b101c15e49",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "06946e55-f70a-4267-b611-aba9fecacbcb",
-                            ConcurrencyStamp = "f3025cda-c571-41cb-8932-30154e4cfe9c",
+                            ConcurrencyStamp = "189cd65d-d35d-4af9-abdc-06dbd7c80690",
                             Name = "TripManager",
                             NormalizedName = "TRIPMANAGER"
                         });
@@ -303,19 +305,19 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "06946e45-c69a-4367-b611-aba9fecccbcb",
+                            Id = "06946e55-c69a-4267-b611-aba9fecccbcb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8ee416c4-b4d3-410f-88cd-5a04205fbe04",
-                            DateJoined = new DateTime(2022, 12, 3, 11, 48, 22, 79, DateTimeKind.Local).AddTicks(8424),
+                            ConcurrencyStamp = "6dea0bad-22c1-42a4-9515-28992fd0837a",
+                            DateJoined = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "root@localhost.com",
-                            EmailConfirmed = true,
+                            EmailConfirmed = false,
                             FirstName = "System",
                             LastName = "Root",
                             LockoutEnabled = false,
                             NormalizedEmail = "ROOT@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOLMgOyk2rpIPBykByzgaUrstaR3SRdJ4QgB/Gt4wAbBZF5tV+vuT1y0pnhANozRsQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENPdSIVVkxZwTsVmvjZKmhqL9Rvrl1m5zeXhkl0rl34RFoSvFA2kLihgdweqFMjXaQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fc6cec6a-0240-4463-9eb9-180bd547307a",
+                            SecurityStamp = "e894816a-76d0-432a-8e24-085481fc86f3",
                             TwoFactorEnabled = false,
                             isActive = false,
                             isTraveler = false
