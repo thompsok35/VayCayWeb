@@ -23,6 +23,7 @@ builder.Services.AddDefaultIdentity<Subscriber>(options => options.SignIn.Requir
 //TODO: Register the repositories
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ITripRepository, TripRepository>();
+builder.Services.AddScoped<IDestinationRepository, DestinationRepository>();
 
 //TODO: Register the AutoMapper
 builder.Services.AddAutoMapper(typeof(MapperConfig));

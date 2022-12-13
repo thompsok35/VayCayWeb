@@ -1,6 +1,5 @@
-﻿@*@model IEnumerable<VayCayPlannerWeb.Data.Models.Trip>*@
-@model IEnumerable<VayCayPlannerWeb.Models.ViewModels.Trip_vm>
-@*@inject IEnumerable<VayCayPlannerWeb.Data.Models.Destinations>*@
+﻿@model IEnumerable<VayCayPlannerWeb.Models.ViewModels.Trip_vm>
+
 
 @{
     ViewData["Title"] = "Trips";
@@ -39,12 +38,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.TotalDestinations)
             </th>
-            <th>
-@*                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedDate)*@
-            </th>
+            @*<th>*@
+
             <th></th>
         </tr>
     </thead>
@@ -75,20 +70,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TotalDestinations)
             </td>
+
             <td>
-@*                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedDate)*@
-            </td>
-            <td>
-                @*https://fontawesome.com/search to search for more icons*@
                 <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen"></i></a> 
                 <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="fa-sharp fa-solid fa-circle-info"></i></a>
-                    <a class="btn btn-info" asp-controller="Destinations" asp-action="Create" asp-route-id="@item.Id">Add Destination</a>
-                @*<a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="fa-sharp fa-solid fa-circle-info"></i></a>*@
+                
                 <button data-id="@item.Id" class="btn btn-danger deleteBtn" type="button"><i class="fa-solid fa-trash-can"></i></button>
-                @*<button data-id="@item.Id" class="btn btn-info" asp-action="Create" asp-route="Destinations/Create">Create New Destination</buttona>*@
+                <button data-id="@item.Id" class="btn btn-primary destinationBtn" asp-route-id="@item.Id" type="button"> Add Destination</button>
+                <button data-id="@item.Id" class="btn btn-primary viewDestinationBtn" asp-route-id="@item.Id" type="button"> View Destinations</button>
             </td>
         </tr>
 }
@@ -96,7 +85,13 @@
 </table>
 
 <form id="deleteForm" asp-action="Delete">   
-    <input type="hidden" id="tripId" name="Id"/>
+    <input type="hidden" id="Id" name="Id"/>
+</form>
+<form id="destinationForm" asp-action="PopulateTrip" asp-controller="Destinations">
+    <input type="hidden" asp-controller="Destinations" asp-action="PopulateTrip" id="AddToTripId" name="Id" />
+</form>
+<form id="tripDestinationForm" asp-action="TripDestinations" asp-controller="Destinations">
+    <input type="hidden" asp-controller="Destinations" asp-action="TripDestinations" id="viewDestinationsTripId" name="Id" />
 </form>
 
 @*sweet client side lib*@
@@ -116,12 +111,46 @@
                     if(confirm){
                         var btn = $(this);
                         var id = btn.data("id");
-                        $('#tripId').val(id);
+                        $('#Id').val(id);
                         $('#deleteForm').submit();
                     }
                 });
             });
         });
+         
+            $('.destinationBtn').click(function (e) {
+                swal({
+                    title: "Add a Destination",
+                    text: "Adding a Destination",
+                    icon: "information",
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if (confirm) {
+                        var btn = $(this);
+                        var id = btn.data("id");
+                    $('#AddToTripId').val(id);
+                        $('#destinationForm').submit();
+                    }
+                });
+            });
+
+            $('.viewDestinationBtn').click(function (e) {
+                swal({
+                    title: "View Destination",
+                    text: "View the trip Destinations",
+                    icon: "information",
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if (confirm) {
+                        var btn = $(this);
+                        var id = btn.data("id");
+                        $('#viewDestinationsTripId').val(id);
+                            $('#tripDestinationForm').submit();
+                    }
+                });
+            });
 
     </script>
 

@@ -6,6 +6,7 @@ namespace VayCayPlannerWeb.Data.Repositories
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly ApplicationDbContext _dbContext;
+
         public GenericRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -15,6 +16,12 @@ namespace VayCayPlannerWeb.Data.Repositories
             await _dbContext.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
             return entity;
+        }
+
+        public async Task AddRangeAsync(List<T> entities)
+        {
+            await _dbContext.AddRangeAsync(entities);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)

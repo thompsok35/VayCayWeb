@@ -1,0 +1,69 @@
+﻿@model VayCayPlannerWeb.Models.ViewModels.TripDestinationCreateVM;
+@*@using VayCayPlannerWeb.Models.ViewModels.Trip_vm;*@
+
+@{
+    ViewData["Title"] = "Create a Destination";
+}
+
+<h3>Add a new Destination this trip: </h3>
+
+<h4>@Html.ValueFor(model => model.TripName)</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddToTrip">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+@*            <div class="form-group">
+                <label asp-for="TripId" class="control-label"></label>
+                <input asp-for=model.TripName class="form-control" />
+                <span asp-validation-for="TripId" class="text-danger"></span>
+            </div>*@
+
+            <input type="hidden" asp-for="TripId" />
+            <div class="form-group">
+                <label asp-for="CityName" class="control-label"></label>
+                <input asp-for="CityName" class="form-control" />
+                <span asp-validation-for="CityName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryName" class="control-label"></label>
+                <input asp-for="CountryName" class="form-control" />
+                <span asp-validation-for="CountryName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArrivalDate" class="control-label"></label>
+                <input asp-for="ArrivalDate" class="form-control" />
+                <span asp-validation-for="ArrivalDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartureDate" class="control-label"></label>
+                <input asp-for="DepartureDate" class="form-control" />
+                <span asp-validation-for="DepartureDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="AddToTrip" name="TripId" class="btn btn-primary" />
+            </div>
+            <script type="text/javascript">
+                $("body").on("change", "#ddlTrips", function () {
+                    $("input[name=Name]").val($(this).find("option:selected").text());
+                });
+            </script>
+
+            @if (ViewBag.Message != null)
+            {
+                <script type="text/javascript">
+                    $(function () {
+                        alert("@ViewBag.Message");
+                    });
+                </script>
+            }
+            
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -1,15 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using VayCayPlannerWeb.Data.Models;
 
-namespace VayCayPlannerWeb.Data.Models
+namespace VayCayPlannerWeb.Models.ViewModels
 {
-    public class Activity : BaseEntity
+    public class Activity_vm
     {
-        // Dataset Properties 
-        [MaxLength(256)]
         public string? ActivityName { get; set; }
-        [MaxLength(512)]
         public string? ActivityDescription { get; set; }
         public bool includesTransport { get; set; }
         public bool isPerPerson { get; set; }
@@ -20,13 +17,12 @@ namespace VayCayPlannerWeb.Data.Models
         public int? Duration { get; set; }
         public string? WebLink { get; set; }
 
-        //// Table relationships
-        //[ForeignKey("ActivityTypeId")]
+        // Table relationships
         //public ActivityType? ActivityType { get; set; }
         //public int ActivityTypeId { get; set; }
 
-        //[ForeignKey("DestinationId")]
-        //public Destination? Destination { get; set; }
-        //public int DestinationId { get; set; }
+        public Destination? Destination { get; set; }
+        public int DestinationId { get; set; }
+
     }
 }

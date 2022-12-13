@@ -1,51 +1,79 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using VayCayPlannerWeb.Contracts;
 using VayCayPlannerWeb.Data;
 using VayCayPlannerWeb.Data.Models;
+using VayCayPlannerWeb.Data.Repositories;
+using VayCayPlannerWeb.Models.ViewModels;
 
 namespace VayCayPlannerWeb.Controllers
 {
     public class DestinationsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDestinationRepository _destination;
+        private readonly ITripRepository _trip;
+        private readonly IMapper _mapper;
 
-        public DestinationsController(ApplicationDbContext context)
+        public DestinationsController(IDestinationRepository destinationRepository,
+            ITripRepository tripRepository, IMapper mapper)
         {
-            _context = context;
+            _destination = destinationRepository;
+            _trip = tripRepository;
+            _mapper = mapper;
         }
 
         // GET: Destinations
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Destinations.ToListAsync());
+            var destinations = _destination.GetDestinationsWithTripName();            
+            return View(destinations);
         }
 
-        // GET: Destinations/Details/5
-        public async Task<IActionResult> Details(int? id)
+        //// GET: Destinations/Create
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
+
+        // GET: Destinations/TripDestinations
+        public async Task<IActionResult> TripDestinations(int Id)
         {
-            if (id == null || _context.Destinations == null)
-            {
-                return NotFound();
-            }
-
-            var destination = await _context.Destinations
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (destination == null)
-            {
-                return NotFound();
-            }
-
-            return View(destination);
+            var destinations = _destination.GetDestinationsByTripId(Id);
+            ViewData["Trip"] = _trip.GetTripById(Id);
+            return View(destinations);
         }
+
+        //// GET: Destinations/Details/5
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null || _context.Destinations == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var destination = await _context.Destinations
+        //        .Include(d => d.Trip)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (destination == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(destination);
+        //}
 
         // GET: Destinations/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
+            ViewData["Trips"] = new SelectList(_destination.GetTrips(), "Id", "Name", _destination.GetTrips());
+            //List<Trip> trips = _destination.GetTrips();
             return View();
         }
 
@@ -54,31 +82,60 @@ namespace VayCayPlannerWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CityName,CountryName,ArrivalDate,DepartureDate,Duration,isMealsIncluded,isActivityIncluded,PackageId,Id,CreatedDate,ModifiedDate")] Destination destination)
+        public async Task<IActionResult> Create(Destination_vm destination_vm)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(destination);
-                await _context.SaveChangesAsync();
+                _destination.CreateDestination(destination_vm);
                 return RedirectToAction(nameof(Index));
             }
-            return View(destination);
+            //ViewData["TripName"] = new SelectList(_trip.Trips(), "Id", "Name");
+            return View(destination_vm);
+        }
+
+
+        // GET: Destinations/AddTrip
+        public async Task<IActionResult> PopulateTrip(TripDestinationCreateVM newDestination)
+        {
+            var thisTrip = await _trip.GetAsync(newDestination.Id);
+            newDestination.TripName = thisTrip.Name;
+            newDestination.TripId = thisTrip.Id;
+            return View(newDestination);
+        }
+
+        // POST: Destinations/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddToTrip(TripDestinationCreateVM newDestination)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _destination.AddDestination(newDestination);
+                return RedirectToAction(nameof(Index));
+            }
+            //ViewData["TripName"] = new SelectList(_trip.Trips(), "Id", "Name");
+            return View(newDestination);
         }
 
         // GET: Destinations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Destinations == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var destination = await _context.Destinations.FindAsync(id);
+            var destination = await _destination.GetAsync(id.Value);
             if (destination == null)
             {
                 return NotFound();
             }
-            return View(destination);
+            //ViewData["TripId"] = new SelectList(_context.Trips, "Id", "Id", destination.TripId);
+            var destination_vm = _mapper.Map<Destination_vm>(destination);
+            return View(destination_vm);
         }
 
         // POST: Destinations/Edit/5
@@ -86,9 +143,9 @@ namespace VayCayPlannerWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CityName,CountryName,ArrivalDate,DepartureDate,Duration,isMealsIncluded,isActivityIncluded,PackageId,Id,CreatedDate,ModifiedDate")] Destination destination)
+        public async Task<IActionResult> Edit(int id, Destination_vm destination_vm)
         {
-            if (id != destination.Id)
+            if (id != destination_vm.Id)
             {
                 return NotFound();
             }
@@ -96,13 +153,12 @@ namespace VayCayPlannerWeb.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
-                    _context.Update(destination);
-                    await _context.SaveChangesAsync();
+                {                    
+                    _destination.UpdateDestination(id, destination_vm);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DestinationExists(destination.Id))
+                    if (! await _destination.Exists(destination_vm.Id))
                     {
                         return NotFound();
                     }
@@ -113,49 +169,46 @@ namespace VayCayPlannerWeb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(destination);
+            //ViewData["TripId"] = new SelectList(_context.Trips, "Id", "Id", destination.TripId);
+            return View(destination_vm);
         }
 
-        // GET: Destinations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Destinations == null)
-            {
-                return NotFound();
-            }
+        //// GET: Destinations/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null || _context.Destinations == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var destination = await _context.Destinations
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (destination == null)
-            {
-                return NotFound();
-            }
+        //    var destination = await _context.Destinations
+        //        .Include(d => d.Trip)
+        //        .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (destination == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(destination);
-        }
+        //    return View(destination);
+        //}
 
         // POST: Destinations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Destinations == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Destinations'  is null.");
-            }
-            var destination = await _context.Destinations.FindAsync(id);
+
+            var destination = await _destination.GetAsync(id);
             if (destination != null)
             {
-                _context.Destinations.Remove(destination);
-            }
-            
-            await _context.SaveChangesAsync();
+                await _destination.DeleteAsync(id);
+            }            
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DestinationExists(int id)
-        {
-          return _context.Destinations.Any(e => e.Id == id);
-        }
+        //private bool DestinationExists(int id)
+        //{
+        //  return _context.Destinations.Any(e => e.Id == id);
+        //}
     }
 }

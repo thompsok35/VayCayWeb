@@ -4,6 +4,6 @@ namespace VayCayPlannerWeb.Data.Extensions
 {
     public class RoleDescription : IdentityRole
     {
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace VayCayPlannerWeb.Models.ViewModels
         [Required]
         public DateTime? EndDate { get; set; }
 
-        [Display(Name= "Trip Duration")]
+        [Display(Name= "Trip Days")]
         public int? Duration { get; set; }
 
         [Display(Name = "Days To Departure")]

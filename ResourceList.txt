@@ -1,0 +1,10 @@
+Great documentation resources:
+
+Web UI - 
+https://www.learnrazorpages.com/
+
+https://getbootstrap.com/docs/5.2
+
+Web UI - Controls
+
+

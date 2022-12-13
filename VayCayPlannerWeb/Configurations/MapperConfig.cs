@@ -9,7 +9,12 @@ namespace VayCayPlannerWeb.Configuration
         public MapperConfig()
         {
             CreateMap<Trip, Trip_vm>().ReverseMap();
+            CreateMap<Destination, Destination_vm>().ReverseMap();
             CreateMap<Traveler, Traveler_vm>().ReverseMap();
+            //CreateMap<Activity, Activity_vm>().ReverseMap();
+            CreateMap<Package, Package_vm>().ReverseMap();
+            //CreateMap<Transport, Transport_vm>().ReverseMap();
+            CreateMap<Lodging, Lodging_vm>().ReverseMap();
 
         }
     }

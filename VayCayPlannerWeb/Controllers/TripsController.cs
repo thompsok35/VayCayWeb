@@ -66,8 +66,8 @@ namespace VayCayPlannerWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var trip = _mapper.Map<Trip>(trip_vm);
-                await _context.AddAsync(trip);
+                //var trip = _mapper.Map<Trip>(trip_vm);
+                _context.CreateTrip(trip_vm);
                 return RedirectToAction(nameof(Index));
             }
             return View(trip_vm);
@@ -108,8 +108,7 @@ namespace VayCayPlannerWeb.Controllers
                 try
                 {
                     var trip = _mapper.Map<Trip>(trip_vm);
-                    await _context.UpdateAsync(trip);
-                    //await _context.SaveChangesAsync();
+                    _context.UpdateTrip(id, trip_vm);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -163,5 +162,13 @@ namespace VayCayPlannerWeb.Controllers
         {
           return await _context.Exists(id);
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreateDestination(int Id)
+        //{
+
+        //}
+
     }
 }
