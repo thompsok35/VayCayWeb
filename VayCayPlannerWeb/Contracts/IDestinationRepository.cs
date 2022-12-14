@@ -13,6 +13,7 @@ namespace VayCayPlannerWeb.Contracts
         IEnumerable<Destination_vm> GetDestinationsByTripId(int tripid);
         bool UpdateTripDestinationCount(int TripId);
         int CountDestinationsByTripId(int tripid);
+        Destination GetTripDestination(int id);
         List<Destination_vm> GetDestinationsWithTripName();
     }
 }

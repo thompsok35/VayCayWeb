@@ -9,7 +9,7 @@
         as VayCayPlannerWeb.Data.Models.Trip;
 }
 
-<h1>Destinations for: @trip.Name</h1>
+<h1>@trip.Name Destinations</h1>
 
 <p>
     @*<a asp-action="Create">Create New</a>*@
@@ -90,7 +90,7 @@
 </table>
 
 <form id="deleteForm" asp-action="Delete">
-    <input type="hidden" id="Id" name="Id" />
+    <input type="hidden" asp-action="Delete" id="Id" name="Id" />
 </form>
 <form id="destinationForm" asp-action="PopulateTrip" asp-controller="Destinations">
     <input type="hidden" asp-controller="Destinations" asp-action="PopulateTrip" id="AddToTripId" name="Id" />

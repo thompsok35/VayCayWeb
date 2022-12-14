@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using VayCayPlannerWeb.Data.Extensions;
+using VayCayPlannerWeb.Data.Models;
 
 namespace VayCayPlannerWeb.Areas.Identity.Pages.Account
 {
@@ -116,7 +117,10 @@ namespace VayCayPlannerWeb.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    //return LocalRedirect(returnUrl);
+                    //TODO get user's trips to display
+                    return RedirectToAction("Trips");
+                    //return RedirectToAction("TripDestinations", new { Id = tripId });
                 }
                 if (result.RequiresTwoFactor)
                 {

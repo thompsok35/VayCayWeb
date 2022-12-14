@@ -7,6 +7,7 @@ using System.Linq;
 using VayCayPlannerWeb.Data.Models;
 using VayCayPlannerWeb.Models.ViewModels;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using AutoMapper;
 
 namespace VayCayPlannerWeb.Data.Repositories
 {
@@ -14,10 +15,29 @@ namespace VayCayPlannerWeb.Data.Repositories
     {
         private readonly ITripRepository _tripRepository;
         private readonly ApplicationDbContext _dbContext;
-        public DestinationRepository(ApplicationDbContext dbContext, ITripRepository tripRepository) : base(dbContext)
+        private readonly IMapper _mapper;
+
+        public DestinationRepository(ApplicationDbContext dbContext,
+                        ITripRepository tripRepository,
+                        IMapper mapper) : base(dbContext)
         {
             _dbContext = dbContext;
             _tripRepository = tripRepository;
+            _mapper = mapper;
+        }
+
+        public Destination GetTripDestination(int id)
+        {
+            var destination = _dbContext.Destinations
+                .Include(x => x.Trip)
+                .Where(d => d.Id == id).FirstOrDefault();
+            if (destination != null)
+            {
+                return destination;
+            }
+            //var trip = _tripRepository.GetTripById(destinations.TripId);
+            //var tripDestinations = _mapper.Map<List<DestinationBasicDetail_vm>>(List<Destination>);
+            return destination;
         }
 
         public List<Trip> GetTrips()

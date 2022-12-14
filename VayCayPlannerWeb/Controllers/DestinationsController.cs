@@ -57,8 +57,8 @@ namespace VayCayPlannerWeb.Controllers
             {
                 return NotFound();
             }
-
-            var destination = _mapper.Map<Destination_vm>(_destination.GetDestinationById(id.Value));
+            var tripDestination = _destination.GetTripDestination(id.Value);
+            var destination = _mapper.Map<Destination_vm>(tripDestination);
             
             if (destination == null)
             {
@@ -127,8 +127,8 @@ namespace VayCayPlannerWeb.Controllers
             {
                 return NotFound();
             }
-
-            var destination = await _destination.GetAsync(id.Value);
+            var destination = _destination.GetTripDestination(id.Value);
+            //var destination = await _destination.GetAsync(id.Value);
             if (destination == null)
             {
                 return NotFound();
@@ -174,37 +174,41 @@ namespace VayCayPlannerWeb.Controllers
             return View(destination_vm);
         }
 
-        //// GET: Destinations/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null || _context.Destinations == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Destinations/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var destination = await _context.Destinations
-        //        .Include(d => d.Trip)
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (destination == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var destination = _destination.GetTripDestination(id.Value);
+            if (destination == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(destination);
-        //}
+            return View(destination);
+        }
 
         // POST: Destinations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-
-            var destination = await _destination.GetAsync(id);
+            var tripId = 0;
+            var destination = _destination.GetTripDestination(id);
+            if (destination.Trip != null)
+            {
+                tripId = destination.Trip.Id;
+            }
+            
+            //var destination = await _destination.GetAsync(id);
             if (destination != null)
             {
                 await _destination.DeleteAsync(id);
-            }            
-            return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction("TripDestinations", new { Id = tripId });
         }
 
         //private bool DestinationExists(int id)
