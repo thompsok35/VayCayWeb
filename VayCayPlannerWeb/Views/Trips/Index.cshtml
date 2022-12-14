@@ -73,9 +73,9 @@
 
             <td>
                 <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen"></i></a> 
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="fa-sharp fa-solid fa-circle-info"></i></a>
-                
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="fa-sharp fa-solid fa-circle-info"></i></a>                
                 <button data-id="@item.Id" class="btn btn-danger deleteBtn" type="button"><i class="fa-solid fa-trash-can"></i></button>
+
                 <button data-id="@item.Id" class="btn btn-primary destinationBtn" asp-route-id="@item.Id" type="button"> Add Destination</button>
                 <button data-id="@item.Id" class="btn btn-primary viewDestinationBtn" asp-route-id="@item.Id" type="button"> View Destinations</button>
             </td>
@@ -99,7 +99,7 @@
     <script>
         $(function(){
             $('.table').DataTable();
-            ////https://datatables.net/examples/styling/bootstrap5
+            
             $('.deleteBtn').click(function(e) {
                 swal({
                     title: "Are you sure?",

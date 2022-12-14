@@ -50,24 +50,23 @@ namespace VayCayPlannerWeb.Controllers
             return View(destinations);
         }
 
-        //// GET: Destinations/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null || _context.Destinations == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Destinations/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var destination = await _context.Destinations
-        //        .Include(d => d.Trip)
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (destination == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var destination = _mapper.Map<Destination_vm>(_destination.GetDestinationById(id.Value));
+            
+            if (destination == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(destination);
-        //}
+            return View(destination);
+        }
 
         // GET: Destinations/Create
         public IActionResult Create(int? id)
@@ -110,11 +109,12 @@ namespace VayCayPlannerWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToTrip(TripDestinationCreateVM newDestination)
         {
-
+            var tripId = newDestination.TripId;
             if (ModelState.IsValid)
             {
                 _destination.AddDestination(newDestination);
-                return RedirectToAction(nameof(Index));
+                
+                return RedirectToAction("TripDestinations",new { Id = tripId });
             }
             //ViewData["TripName"] = new SelectList(_trip.Trips(), "Id", "Name");
             return View(newDestination);
@@ -145,6 +145,7 @@ namespace VayCayPlannerWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Destination_vm destination_vm)
         {
+            var tripId = destination_vm.TripId;
             if (id != destination_vm.Id)
             {
                 return NotFound();
@@ -167,7 +168,7 @@ namespace VayCayPlannerWeb.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("TripDestinations", new { Id = tripId });
             }
             //ViewData["TripId"] = new SelectList(_context.Trips, "Id", "Id", destination.TripId);
             return View(destination_vm);

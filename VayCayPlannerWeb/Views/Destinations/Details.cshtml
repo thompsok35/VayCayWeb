@@ -1,4 +1,4 @@
-﻿@model VayCayPlannerWeb.Data.Models.Destination
+﻿@model VayCayPlannerWeb.Models.ViewModels.Destination_vm;
 
 @{
     ViewData["Title"] = "Details";
@@ -59,26 +59,15 @@
             @Html.DisplayFor(model => model.PackageId)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Trip)
+            @Html.DisplayNameFor(model => model.TripId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Trip.Id)
+            @Html.DisplayFor(model => model.TripId)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedDate)
-        </dd>
+
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="TripDestinations" asp-route-id="@Model?.TripId">Back to List</a>
 </div>

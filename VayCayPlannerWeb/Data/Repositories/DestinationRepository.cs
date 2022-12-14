@@ -26,6 +26,11 @@ namespace VayCayPlannerWeb.Data.Repositories
             return result;
         }
 
+        public Destination GetDestinationById(int Id)
+        {
+            return _dbContext.Destinations.Where(x => x.Id == Id).FirstOrDefault();
+        }
+
         public bool CreateDestination(Destination_vm viewModel)
         {
             bool result = false;

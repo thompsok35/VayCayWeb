@@ -6,6 +6,7 @@ namespace VayCayPlannerWeb.Contracts
     public interface IDestinationRepository : IGenericRepository<Destination>
     {
         List<Trip> GetTrips();
+        Destination GetDestinationById(int Id);
         bool CreateDestination(Destination_vm viewModel);
         bool UpdateDestination(int Id, Destination_vm viewModel);
         bool AddDestination(TripDestinationCreateVM viewModel);
