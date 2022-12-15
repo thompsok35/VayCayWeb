@@ -20,7 +20,6 @@ namespace VayCayPlannerWeb.Data.Models
         public int? PackageId { get; set; }
 
         // Table relationships
-
         [ForeignKey("TripId")]
         public Trip? Trip { get; set; }
         public int? TripId { get; set; }

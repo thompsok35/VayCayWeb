@@ -20,7 +20,9 @@ namespace VayCayPlannerWeb.Data
         public DbSet<Package> Packages { get; set; }
         public DbSet<Traveler> Travelers { get; set; }
         public DbSet<Destination> Destinations { get; set; }
-
+        public DbSet<TravelGroupTrips> TravelGroupTrips { get; set; }
+        public DbSet<TravelerGroups> TravelerGroups { get; set; }
+        public DbSet<TravelGroup> TravelGroups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
