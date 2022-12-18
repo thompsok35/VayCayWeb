@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VayCayPlannerWeb.Data;
 
@@ -11,9 +12,10 @@ using VayCayPlannerWeb.Data;
 namespace VayCayPlannerWeb.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221218202107_added the OwnerEntity class to travel groups")]
+    partial class addedtheOwnerEntityclasstotravelgroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,28 +54,28 @@ namespace VayCayPlannerWeb.Data.Migrations
                         new
                         {
                             Id = "06946e55-f70a-4267-b611-aba9fecccbcb",
-                            ConcurrencyStamp = "0c831617-0740-4de3-b82d-20c99fe7659a",
+                            ConcurrencyStamp = "86950356-6e2a-4673-8add-ee4fecd132ca",
                             Name = "root",
                             NormalizedName = "ROOT"
                         },
                         new
                         {
                             Id = "06946e55-f70d-4267-b611-aba9feccabcf",
-                            ConcurrencyStamp = "7f6616e0-6523-4edc-b896-ab2888818407",
+                            ConcurrencyStamp = "1d4d0c71-cddb-4225-ad47-cc970f18a552",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "06946e55-f70b-4267-b611-aba9fecacbcb",
-                            ConcurrencyStamp = "76508d3e-3015-497b-af39-555c0076aeaa",
+                            ConcurrencyStamp = "1b239c8c-0c9e-4bd8-aa66-920525c4cca2",
                             Name = "TripManager",
                             NormalizedName = "TRIPMANAGER"
                         },
                         new
                         {
                             Id = "06946e55-f70c-4267-b611-aba9fecacbcb",
-                            ConcurrencyStamp = "277979d7-259e-4288-883d-a259394f6c18",
+                            ConcurrencyStamp = "23377adf-b45f-4596-87c2-dbd2290927bc",
                             Name = "Traveler",
                             NormalizedName = "TRAVELER"
                         });
@@ -312,17 +314,17 @@ namespace VayCayPlannerWeb.Data.Migrations
                         {
                             Id = "06946e45-c69a-4367-b611-aba9fecccbcb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "99d701c4-7a29-400a-bb93-b443fc0ff071",
-                            DateJoined = new DateTime(2022, 12, 18, 16, 33, 25, 441, DateTimeKind.Local).AddTicks(1810),
+                            ConcurrencyStamp = "7bdffdef-3867-4525-b6eb-9874a066ff39",
+                            DateJoined = new DateTime(2022, 12, 18, 15, 21, 6, 744, DateTimeKind.Local).AddTicks(3222),
                             Email = "root@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
                             LastName = "Root",
                             LockoutEnabled = false,
                             NormalizedEmail = "ROOT@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELHdpbipzxoM9mAHFcZ7xi3AEhTvtlI8i9maFdTowiIUsrlxpj1CYnnVkEdD+7KIyQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELXykpNhOGmhXqwe8pmxfTZFMOJS15vRx8AGd8gbguEW0RBdO9ap+svvPAd0fsIT+g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "15ec56af-e562-4449-88da-7837e30a6289",
+                            SecurityStamp = "3b41b8a4-417d-4bcd-8fff-155c42a24a54",
                             TwoFactorEnabled = false,
                             isActive = false,
                             isTraveler = false
@@ -348,7 +350,7 @@ namespace VayCayPlannerWeb.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DepartureDate")
@@ -357,23 +359,14 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.Property<int?>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("PackageId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PrimaryTravelGroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TravelerId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("TripId")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isActivityIncluded")
                         .HasColumnType("bit");
@@ -405,13 +398,13 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.Property<decimal>("CleaningFees")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("MaxOccupancy")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -424,17 +417,8 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.Property<decimal>("OtherFees")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("PrimaryTravelGroupId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("TotalCost")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("TravelerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WebLink")
                         .HasColumnType("nvarchar(max)");
@@ -461,7 +445,7 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.Property<string>("CompanyName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("EndDate")
@@ -482,7 +466,7 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.Property<DateTime?>("InsuranceDueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal?>("PackageCost")
@@ -500,17 +484,8 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.Property<int?>("PackageTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PrimaryTravelGroupId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("TravelerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isAllinclusive")
                         .HasColumnType("bit");
@@ -528,7 +503,7 @@ namespace VayCayPlannerWeb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmailAddress")
@@ -547,7 +522,7 @@ namespace VayCayPlannerWeb.Data.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("PrimaryGroupId")
@@ -555,15 +530,6 @@ namespace VayCayPlannerWeb.Data.Migrations
 
                     b.Property<int?>("PrimaryRoleId")
                         .HasColumnType("int");
-
-                    b.Property<int?>("PrimaryTravelGroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TravelerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isActive")
                         .HasColumnType("bit");
@@ -581,14 +547,11 @@ namespace VayCayPlannerWeb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("PrimaryTravelGroupId")
-                        .HasColumnType("int");
 
                     b.Property<int>("TravelGroupId")
                         .HasColumnType("int");
@@ -616,22 +579,16 @@ namespace VayCayPlannerWeb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("GroupDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GroupName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("PrimaryTravelGroupId")
+                    b.Property<int>("PrimaryTravelGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TravelerId")
+                    b.Property<int>("TravelerId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -650,26 +607,17 @@ namespace VayCayPlannerWeb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("PrimaryTravelGroupId")
-                        .HasColumnType("int");
 
                     b.Property<int>("TravelGroupId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TravelerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TripId")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -684,7 +632,7 @@ namespace VayCayPlannerWeb.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("DepartInDays")
@@ -700,18 +648,14 @@ namespace VayCayPlannerWeb.Data.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("ModifiedDate")
+                    b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int?>("PrimaryTravelGroupId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("TotalDestinations")
@@ -719,12 +663,6 @@ namespace VayCayPlannerWeb.Data.Migrations
 
                     b.Property<int?>("TotalTravelers")
                         .HasColumnType("int");
-
-                    b.Property<int?>("TravelerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

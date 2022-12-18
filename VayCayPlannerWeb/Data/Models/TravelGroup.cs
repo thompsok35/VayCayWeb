@@ -2,9 +2,9 @@
 
 namespace VayCayPlannerWeb.Data.Models
 {
-    public class TravelGroup
+    public class TravelGroup : BaseEntity
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
         public string? GroupName { get; set; }
 
