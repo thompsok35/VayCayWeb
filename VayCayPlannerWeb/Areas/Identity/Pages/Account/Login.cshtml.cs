@@ -119,7 +119,7 @@ namespace VayCayPlannerWeb.Areas.Identity.Pages.Account
                     _logger.LogInformation("User logged in.");
                     //return LocalRedirect(returnUrl);
                     //TODO get user's trips to display
-                    return RedirectToAction("Trips");
+                    return RedirectToAction("Index", "Trips");
                     //return RedirectToAction("TripDestinations", new { Id = tripId });
                 }
                 if (result.RequiresTwoFactor)

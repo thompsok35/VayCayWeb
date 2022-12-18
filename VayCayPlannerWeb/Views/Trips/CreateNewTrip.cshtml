@@ -1,0 +1,102 @@
+﻿@model VayCayPlannerWeb.Models.ViewModels.CreateNewTrip_vm
+
+@{
+    ViewData["Title"] = "CreateNewTrip";
+}
+
+<h1>Create a New Trip</h1>
+
+<h4>Trip Organizer: @User.Identity?.Name </h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateNewTrip">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SubscriberEmail" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupName" class="control-label"></label>
+                <input asp-for="GroupName" class="form-control" />
+                <span asp-validation-for="GroupName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" name="SubscriberEmail" asp-controller="Trips" asp-action="CreateNewTrip" class="btn btn-primary" />
+            </div>
+            <button data-id="SubscriberEmail" class="btn btn-primary createTripBtn" asp-route-id="@User.Identity?.Name" type="button">Create Trip</button>
+ 
+        </form>
+    </div>
+</div>
+
+<form id="createTripForm" asp-action="CreateNewTrip" asp-controller="Trips">
+    <input type="hidden" asp-controller="Trips" asp-action="CreateNewTrip" id="AddToTripId" name="Id" />
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts{
+    <script>
+        $(function () {
+            $('.table').DataTable();
+
+            $('.deleteBtn').click(function (e) {
+                swal({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to delete",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if (confirm) {
+                        var btn = $(this);
+                        var id = btn.data("id");
+                        $('#Id').val(id);
+                        $('#deleteForm').submit();
+                    }
+                });
+            });
+        });
+
+        $('.createTripBtn').click(function (e) {
+            swal({
+                title: "Add a Trip",
+                //text: "Organized by: " + @User.Identity?.Name,
+                icon: "information",
+                buttons: true,
+                dangerMode: true
+            }).then((confirm) => {
+                if (confirm) {
+                    var btn = $(this);
+                    var id = btn.data("id");
+                    $('#AddToTripId').val(id);
+                    $('#createTripForm').submit();
+                }
+            });
+        });
+
+        //$('.viewDestinationBtn').click(function (e) {
+        //    swal({
+        //        title: "View Destination",
+        //        text: "View the trip Destinations",
+        //        icon: "information",
+        //        buttons: true,
+        //        dangerMode: true
+        //    }).then((confirm) => {
+        //        if (confirm) {
+        //            var btn = $(this);
+        //            var id = btn.data("id");
+        //            $('#viewDestinationsTripId').val(id);
+        //            $('#tripDestinationForm').submit();
+        //        }
+        //    });
+        //});
+
+    </script>
+
+}

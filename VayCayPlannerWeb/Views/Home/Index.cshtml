@@ -6,10 +6,70 @@
     <h1 class="display-4">Welcome to the family VayCay Planner</h1>
 
     <p>Register your email address and build your next family vacation experience with VayCay.</p>
-    <button data-id="TravelerId" class="btn btn-primary destinationBtn" asp-route-id="Id" type="button"> Create Account</button>
-    <button data-id="TravelerId" class="btn btn-primary destinationBtn" asp-route-id="Id" type="button"> Manage Profile</button>
-    <button data-id="TravelerId" class="btn btn-primary destinationBtn" asp-route-id="Id" type="button"> Create Travel Group</button>
-
+    @*<button data-id="TravelerId" class="btn btn-primary registerBtn" asp-route-id="Id" type="button"> Create Account</button>*@
+    <button data-id="TravelerId" class="btn btn-primary createTripBtn" asp-route-id="Id" type="button">Create a Trip</button>
+    <button data-id="TravelerId" class="btn btn-primary travelGroupBtn" asp-route-id="Id" type="button">Create Travel Group</button>
+    <button data-id="TravelerId" class="btn btn-primary addTravelersBtn" asp-route-id="Id" type="button">Add Travelers</button>
 </div>
+
+<form id="addNewTripForm" asp-action="CreateNewTrip" asp-controller="Trips">
+    <input type="hidden" asp-controller="Trips" asp-action="CreateNewTrip" id="addNewTrip" name="Id" />
+</form>
+<form id="addTravelersForm" asp-action="Create" asp-controller="Travelers">
+    <input type="hidden" asp-controller="Travelers" asp-action="Create" id="addTravelers" name="Id" />
+</form>
+<form id="travelGroupForm" asp-action="Create" asp-controller="TravelGroups">
+    <input type="hidden" asp-controller="TravelGroups" asp-action="Create" id="createTravelGroup" name="Id" />
+</form>
+
+@section Scripts{
+    <script>
+        $(function () {
+            $('.table').DataTable();
+
+            $('.deleteBtn').click(function (e) {
+                swal({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to delete",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if (confirm) {
+                        var btn = $(this);
+                        var id = btn.data("id");
+                        $('#Id').val(id);
+                        $('#deleteForm').submit();
+                    }
+                });
+            });
+        });
+
+            $('.addTravelersBtn').click(function (e) {
+                var btn = $(this);
+                var id = btn.data("id");
+                $('#addTravelers').val(id);
+                $('#addTravelersForm').submit();
+            });
+
+            $('.createTripBtn').click(function (e) {
+                var btn = $(this);
+                var id = btn.data("id");
+                $('#addNewTrip').val(id);
+                $('#addNewTripForm').submit();
+            });
+
+            $('.travelGroupBtn').click(function (e)
+            {
+                var btn = $(this);
+                var id = btn.data("id");
+                $('#createTravelGroup').val(id);
+                $('#travelGroupForm').submit();
+
+            });
+
+    </script>
+
+}
 
 

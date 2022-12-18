@@ -29,6 +29,8 @@ namespace VayCayPlannerWeb.Controllers
         // GET: Trips
         public async Task<IActionResult> Trips()
         {
+            //does this subscriber a member of a travel group
+
             var trips = _mapper.Map<List<Trip_vm>>(await _context.GetAllAsync());
             return View(trips);
         }

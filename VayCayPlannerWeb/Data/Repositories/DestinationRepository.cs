@@ -4,7 +4,6 @@ using VayCayPlannerWeb.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using VayCayPlannerWeb.Data.Models;
 using VayCayPlannerWeb.Models.ViewModels;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using AutoMapper;

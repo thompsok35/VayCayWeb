@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VayCayPlannerWeb.Contracts;
 using VayCayPlannerWeb.Data;
+using VayCayPlannerWeb.Data.Extensions;
 using VayCayPlannerWeb.Data.Models;
 using VayCayPlannerWeb.Data.Repositories;
 using VayCayPlannerWeb.Models.ViewModels;
@@ -18,17 +20,24 @@ namespace VayCayPlannerWeb.Controllers
     public class TripsController : Controller
     {
         private readonly ITripRepository _context;
+        private readonly UserManager<Subscriber> _userManager;
+        private readonly ISubscriberRepository _subscriberRepository;
         private readonly IMapper _mapper;
 
-        public TripsController(ITripRepository tripRepository, IMapper mapper)
+        public TripsController(ITripRepository tripRepository, 
+                    UserManager<Subscriber> userManager, 
+                    ISubscriberRepository subscriberRepository, IMapper mapper)
         {
             _context = tripRepository;
+            _userManager = userManager;
+            _subscriberRepository = subscriberRepository;
             _mapper = mapper;
         }
 
         // GET: Trips
         public async Task<IActionResult> Index()
         {
+
             var trips = _mapper.Map<List<Trip_vm>>(await _context.GetAllAsync());
             return View(trips);
         }
@@ -54,6 +63,40 @@ namespace VayCayPlannerWeb.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        // GET: Trips/CreateNewTrip
+        public IActionResult CreateNewTrip()
+        {
+            return View();
+        }
+
+        // POST: Trips/CreateNewTrip
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Name,Description,StartDate,EndDate,Duration,DepartInDays,TotalTravelers,TotalDestinations,Id,CreatedDate,ModifiedDate")] Trip trip)
+        public async Task<IActionResult> CreateNewTrip(CreateNewTrip_vm trip_vm)
+        {
+            if (trip_vm.Name != null)
+            {
+                var user = User.Identity?.Name;
+                var organizer = _subscriberRepository.GetProfileByEmail(user);
+                var newTrip = new CreateNewTrip_vm
+                {
+                    Name = trip_vm.Name,
+                    GroupName = trip_vm.GroupName,
+                    SubscriberEmail = user,
+                    SubscriberId = organizer.Id,
+                };
+                if (ModelState.IsValid)
+                {
+                    _context.CreateNewTrip(newTrip);
+                    return RedirectToAction(nameof(Index));
+                } 
+            }
+            return View(trip_vm);
         }
 
         // POST: Trips/Create

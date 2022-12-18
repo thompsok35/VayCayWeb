@@ -24,6 +24,10 @@ builder.Services.AddDefaultIdentity<Subscriber>(options => options.SignIn.Requir
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ITripRepository, TripRepository>();
 builder.Services.AddScoped<IDestinationRepository, DestinationRepository>();
+builder.Services.AddScoped<ISubscriberRepository, SubscriberRepository>();
+builder.Services.AddScoped<ITravelerGroupsRepository, TravelerGroupsRepository>();
+builder.Services.AddScoped<ITravelGroupRepository, TravelGroupRepository>();
+builder.Services.AddScoped<ITravelGroupTripsRepository, TravelGroupTripsRepository>();
 
 //TODO: Register the AutoMapper
 builder.Services.AddAutoMapper(typeof(MapperConfig));

@@ -9,8 +9,8 @@ namespace VayCayPlannerWeb.Data.Models
         //[ForeignKey("UserId")]
         public string UserId { get; set; }
 
-        [ForeignKey("TravelerId")]
-        public Traveler? Traveler { get; set; }
+        //[ForeignKey("TravelerId")]
+        //public Traveler? Traveler { get; set; }
         public int TravelerId { get; set;}
 
         [ForeignKey("TravelGroupId")]

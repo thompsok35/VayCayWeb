@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -33,7 +34,7 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" asp-controller="Trips" asp-action="Create">Add a Trip</a></li>
                                 <li><a class="dropdown-item" asp-controller="Travelers" asp-action="Create">Add Travelers</a></li>
-                                <li><a class="dropdown-item" href="#">Travel Groups</a></li>
+                                <li><a class="dropdown-item" asp-controller="TravelGroups" asp-action="Create">Travel Groups</a></li>
                                 <li><a class="dropdown-item" asp-controller="Destinations" asp-action="Create">Add Destinations</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-controller="Packages" asp-action="Create">Add Packages</a></li>
@@ -46,7 +47,7 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" asp-controller="Trips" asp-action="Index">Trips</a></li>
                                 <li><a class="dropdown-item" asp-controller="Travelers" asp-action="Index">Travelers</a></li>
-                                <li><a class="dropdown-item" href="#">Travel Groups</a></li>
+                                <li><a class="dropdown-item" asp-controller="TravelGroups" asp-action="Index">Travel Groups</a></li>
                                 <li><a class="dropdown-item" asp-controller="Destinations" asp-action="Index">Destinations</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-controller="Packages" asp-action="Index">Packages</a></li>

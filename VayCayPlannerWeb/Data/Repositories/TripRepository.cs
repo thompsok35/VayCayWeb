@@ -8,10 +8,12 @@ namespace VayCayPlannerWeb.Data.Repositories
     public class TripRepository : GenericRepository<Trip>, ITripRepository
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly ITravelGroupRepository _travelGroupRepository;
 
-        public TripRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public TripRepository(ApplicationDbContext dbContext, ITravelGroupRepository travelGroupRepository) : base(dbContext)
         {
             _dbContext = dbContext;
+            _travelGroupRepository =travelGroupRepository;
         }
 
         public IEnumerable<Trip> Trips()
@@ -57,6 +59,68 @@ namespace VayCayPlannerWeb.Data.Repositories
             catch (Exception ex)
             {
                 result = false;               
+            }
+            return result;
+        }
+
+        public bool CreateNewTrip(CreateNewTrip_vm viewModel)
+        {
+            bool result = false;
+
+            try
+            {
+                var NewTrip = new Trip
+                {
+                    CreatedDate = DateTime.Now, 
+                    ModifiedDate = DateTime.Today,
+                    Name = viewModel.Name,
+                };
+                var NewTravelGroup = new TravelGroup
+                {                    
+                    GroupName = viewModel.GroupName,
+                    GroupDescription = $"Travel group for the [{viewModel.Name}] trip",
+                };
+                _dbContext.Add(NewTrip);
+                var thisTravelGroupId = _travelGroupRepository.AddNewTravelGroup(NewTravelGroup);
+                _dbContext.SaveChanges();
+                var thisTrip = _dbContext.Trips.Where(x => x.Name == viewModel.Name).FirstOrDefault();
+                var thisTravelGroupTrip = new TravelGroupTrips
+                {
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Today,
+                    TravelGroupId = thisTravelGroupId,
+                    TripId = thisTrip.Id
+                };
+                _dbContext.Add(thisTravelGroupTrip);
+                _dbContext.SaveChanges();
+
+                var NewTravelerGroup = new TravelerGroups 
+                {
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Today,
+                    TravelGroupId = 1,
+                    UserId = viewModel.SubscriberId,
+                    //TripId = viewModel.TripId,
+                };
+                _dbContext.Add(NewTravelerGroup);
+                _dbContext.SaveChanges();
+                //foreach (var traveler in viewModel.Travelers)
+                //{
+                //    var TravelGroupTrip = new TravelGroupTrips
+                //    {
+                //        CreatedDate = DateTime.Today,
+                //        TripId = thisTrip.Id,
+                //        TravelGroupId = 1,
+                //        ModifiedDate = DateTime.Today,
+                //    };
+                //    _dbContext.Add(TravelGroupTrip);
+                //};
+
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
             }
             return result;
         }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using VayCayPlannerWeb.Data.Models;
 using VayCayPlannerWeb.Data.Extensions;
 using VayCayPlannerWeb.Configurations.Entities;
+using VayCayPlannerWeb.Models.ViewModels;
 
 namespace VayCayPlannerWeb.Data
 {
@@ -29,7 +30,8 @@ namespace VayCayPlannerWeb.Data
             base.OnModelCreating(builder);
             builder.ApplyConfiguration(new RoleSeedConfiguration());
             builder.ApplyConfiguration(new UserSeedConfiguration());
-            builder.ApplyConfiguration(new UserRoleSeedConfiguration());
-        }
+            builder.ApplyConfiguration(new UserRoleSeedConfiguration());       }
+
+   
     }
 }
