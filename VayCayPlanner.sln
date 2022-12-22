@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VayCayPlannerWeb", "VayCayP
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeveloperNotes", "DeveloperNotes", "{C04A2F58-5402-4BF2-BBD3-BE44045D0009}"
 	ProjectSection(SolutionItems) = preProject
+		LoginFlow.txt = LoginFlow.txt
 		Readme.txt = Readme.txt
 		ResourceList.txt = ResourceList.txt
 	EndProjectSection

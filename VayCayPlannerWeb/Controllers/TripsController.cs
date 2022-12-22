@@ -19,27 +19,36 @@ namespace VayCayPlannerWeb.Controllers
 {
     public class TripsController : Controller
     {
-        private readonly ITripRepository _context;
+        private readonly ITripRepository _tripRepository;
         private readonly UserManager<Subscriber> _userManager;
+        private readonly SignInManager<Subscriber> _signInManager;
         private readonly ISubscriberRepository _subscriberRepository;
+        private readonly ITravelGroupRepository _travelGroupRepository;
         private readonly IMapper _mapper;
 
         public TripsController(ITripRepository tripRepository, 
                     UserManager<Subscriber> userManager, 
-                    ISubscriberRepository subscriberRepository, IMapper mapper)
+                    ISubscriberRepository subscriberRepository, 
+                    SignInManager<Subscriber> signInManager,
+                    ITravelGroupRepository travelGroupRepository, IMapper mapper)
         {
-            _context = tripRepository;
+            _tripRepository = tripRepository;
             _userManager = userManager;
             _subscriberRepository = subscriberRepository;
             _mapper = mapper;
+            _signInManager = signInManager;
+            _travelGroupRepository = travelGroupRepository;
         }
 
         // GET: Trips
         public async Task<IActionResult> Index()
         {
-
-            var trips = _mapper.Map<List<Trip_vm>>(await _context.GetAllAsync());
-            return View(trips);
+            if (_signInManager.IsSignedIn(User))
+            {
+                var trips = _mapper.Map<List<Trip_vm>>(_tripRepository.Trips().Result);
+                return View(trips);
+            }
+            return View();
         }
 
         // GET: Trips/Details/5
@@ -50,7 +59,7 @@ namespace VayCayPlannerWeb.Controllers
                 return NotFound();
             }
 
-            var trip = await _context.GetAsync(id.Value);
+            var trip = await _tripRepository.GetAsync(id.Value);
             if (trip == null)
             {
                 return NotFound();
@@ -62,7 +71,15 @@ namespace VayCayPlannerWeb.Controllers
         // GET: Trips/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new CreateTrip_vm
+            {
+                //You can pre-populate data into the fields of the view model here...
+                //The SelectList provides the source data for drop doen
+                TravelGroups = new SelectList(_travelGroupRepository.MyTravelGroups().Result, "Id", "GroupName")
+
+            };
+
+            return View(model);
         }
 
         // GET: Trips/CreateNewTrip
@@ -77,13 +94,13 @@ namespace VayCayPlannerWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //public async Task<IActionResult> Create([Bind("Name,Description,StartDate,EndDate,Duration,DepartInDays,TotalTravelers,TotalDestinations,Id,CreatedDate,ModifiedDate")] Trip trip)
-        public async Task<IActionResult> CreateNewTrip(CreateNewTrip_vm trip_vm)
+        public async Task<IActionResult> CreateFirstTrip(CreateFirstTrip_vm trip_vm)
         {
             if (trip_vm.Name != null)
             {
                 var user = User.Identity?.Name;
                 var organizer = _subscriberRepository.GetProfileByEmail(user);
-                var newTrip = new CreateNewTrip_vm
+                var newTrip = new CreateFirstTrip_vm
                 {
                     Name = trip_vm.Name,
                     GroupName = trip_vm.GroupName,
@@ -92,7 +109,7 @@ namespace VayCayPlannerWeb.Controllers
                 };
                 if (ModelState.IsValid)
                 {
-                    _context.CreateNewTrip(newTrip);
+                    _tripRepository.CreateNewTrip(newTrip);
                     return RedirectToAction(nameof(Index));
                 } 
             }
@@ -105,12 +122,12 @@ namespace VayCayPlannerWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //public async Task<IActionResult> Create([Bind("Name,Description,StartDate,EndDate,Duration,DepartInDays,TotalTravelers,TotalDestinations,Id,CreatedDate,ModifiedDate")] Trip trip)
-        public async Task<IActionResult> Create(Trip_vm trip_vm)
+        public async Task<IActionResult> Create(CreateTrip_vm trip_vm)
         {
             if (ModelState.IsValid)
             {
                 //var trip = _mapper.Map<Trip>(trip_vm);
-                _context.CreateTrip(trip_vm);
+                await _tripRepository.CreateTrip(trip_vm);
                 return RedirectToAction(nameof(Index));
             }
             return View(trip_vm);
@@ -124,7 +141,7 @@ namespace VayCayPlannerWeb.Controllers
                 return NotFound();
             }
             //Get the record from the DB with the data model
-            var trip = await _context.GetAsync(id.Value);
+            var trip = await _tripRepository.GetAsync(id.Value);
             if (trip == null)
             {
                 return NotFound();
@@ -151,7 +168,7 @@ namespace VayCayPlannerWeb.Controllers
                 try
                 {
                     var trip = _mapper.Map<Trip>(trip_vm);
-                    _context.UpdateTrip(id, trip_vm);
+                    _tripRepository.UpdateTrip(id, trip_vm);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -192,10 +209,10 @@ namespace VayCayPlannerWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var trip = await _context.GetAsync(id);
+            var trip = await _tripRepository.GetAsync(id);
             if (trip != null)
             {
-                await _context.DeleteAsync(id);
+                await _tripRepository.DeleteAsync(id);
             }           
 
             return RedirectToAction(nameof(Index));
@@ -203,7 +220,7 @@ namespace VayCayPlannerWeb.Controllers
 
         private async Task<bool> TripExists(int id)
         {
-          return await _context.Exists(id);
+          return await _tripRepository.Exists(id);
         }
 
         //[HttpPost]

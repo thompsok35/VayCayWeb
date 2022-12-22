@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using VayCayPlannerWeb.Contracts;
+using VayCayPlannerWeb.Data.Extensions;
 using VayCayPlannerWeb.Data.Models;
 using VayCayPlannerWeb.Models.ViewModels;
 
@@ -9,16 +13,51 @@ namespace VayCayPlannerWeb.Data.Repositories
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly ITravelGroupRepository _travelGroupRepository;
+        private readonly UserManager<Subscriber> _userManager;
+        private readonly SignInManager<Subscriber> _signInManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TripRepository(ApplicationDbContext dbContext, ITravelGroupRepository travelGroupRepository) : base(dbContext)
+        public TripRepository(ApplicationDbContext dbContext, 
+            ITravelGroupRepository travelGroupRepository,
+            SignInManager<Subscriber> signInManager,
+            IHttpContextAccessor httpContextAccessor,
+            UserManager<Subscriber> userManager) : base(dbContext)
         {
             _dbContext = dbContext;
-            _travelGroupRepository =travelGroupRepository;
+            _travelGroupRepository = travelGroupRepository;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public IEnumerable<Trip> Trips()
+        private async Task<Subscriber> CurrentUser()
         {
-            var trips = _dbContext.Trips.ToList();
+            var user = await _userManager.GetUserAsync(_httpContextAccessor?.HttpContext?.User);
+            if (user != null)
+            {
+                return user;
+            }
+            return null;
+        }
+
+        public async Task<List<Trip>> Trips()
+        {
+            var thisUser = await CurrentUser();
+            var trips = await _dbContext.Trips.Where(x => x.UserId == thisUser.Id).ToListAsync();
+            return trips;
+        }
+
+        public async Task<List<Trip>> MyTrips()
+        {
+            var thisUser = await CurrentUser();
+            var trips = await _dbContext.Trips.Where(x => x.UserId == thisUser.Id).ToListAsync();
+            return trips;
+        }
+
+        public async Task<List<Trip>> MyUpcomingTrips()
+        {
+            var thisUser = await CurrentUser();
+            var trips = await _dbContext.Trips.Where(x => x.UserId == thisUser.Id && x.StartDate > DateTime.Today).ToListAsync();
             return trips;
         }
 
@@ -33,13 +72,13 @@ namespace VayCayPlannerWeb.Data.Repositories
             return null;
         }
 
-        public bool CreateTrip(Trip_vm viewModel)
+        public async Task<bool> CreateTrip(CreateTrip_vm viewModel)
         {
             bool result = false;
-
+            var user = await _userManager.GetUserAsync(_httpContextAccessor?.HttpContext?.User);
             try
             {
-                var NewTrip = new Trip
+                var thisTrip = new Trip
                 {
                     CreatedDate = DateTime.Now,
                     DepartInDays = ((int)(viewModel.StartDate - DateTime.Today).TotalDays),
@@ -49,12 +88,31 @@ namespace VayCayPlannerWeb.Data.Repositories
                     EndDate = viewModel.EndDate,
                     ModifiedDate = DateTime.Today,
                     Name = viewModel.Name,
-                    TotalDestinations = viewModel.TotalDestinations,
-                    TotalTravelers = viewModel.TotalTravelers
+                    UserId = user.Id,
+                    TotalDestinations = 0,
+                    TotalTravelers = 0
                 };
-                _dbContext.Add(NewTrip);
-                _dbContext.SaveChanges();
-                result = true;
+
+                if (SaveTrip(thisTrip).Result)
+                {
+                    var newTrip = _dbContext.Trips.Where(x => x.Name == viewModel.Name).FirstOrDefault();
+                    if (newTrip != null)
+                    {
+                        var thisTravelGroupTrip = new TravelGroupTrips
+                        {
+                            CreatedDate = DateTime.Now,
+                            ModifiedDate = DateTime.Today,
+                            TravelGroupId = viewModel.TravelGroupId,
+                            TripId = newTrip.Id,
+                            UserId = user.Id,
+                            
+                        };
+                        if (SaveTravelGroupTrip(thisTravelGroupTrip).Result)
+                        {
+                            result = true;
+                        }
+                    }
+                }                
             }
             catch (Exception ex)
             {
@@ -63,7 +121,7 @@ namespace VayCayPlannerWeb.Data.Repositories
             return result;
         }
 
-        public bool CreateNewTrip(CreateNewTrip_vm viewModel)
+        public async Task<bool> CreateNewTrip(CreateFirstTrip_vm viewModel)
         {
             bool result = false;
 
@@ -81,7 +139,7 @@ namespace VayCayPlannerWeb.Data.Repositories
                     GroupDescription = $"Travel group for the [{viewModel.Name}] trip",
                 };
                 _dbContext.Add(NewTrip);
-                var thisTravelGroupId = _travelGroupRepository.AddNewTravelGroup(NewTravelGroup);
+                var thisTravelGroupId = await _travelGroupRepository.AddNewTravelGroup(NewTravelGroup);
                 _dbContext.SaveChanges();
                 var thisTrip = _dbContext.Trips.Where(x => x.Name == viewModel.Name).FirstOrDefault();
                 var thisTravelGroupTrip = new TravelGroupTrips
@@ -125,6 +183,33 @@ namespace VayCayPlannerWeb.Data.Repositories
             return result;
         }
 
+        private async Task<bool> SaveTrip(Trip trip)
+        {
+            try
+            {
+                _dbContext.Add(trip);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private async Task<bool> SaveTravelGroupTrip(TravelGroupTrips travelGroupTrip)
+        {
+            try
+            {
+                _dbContext.Add(travelGroupTrip);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public int DestinationCount(int TripId)
         {
             var destinations = _dbContext.Destinations.Where(x => x.TripId == TripId).Count();

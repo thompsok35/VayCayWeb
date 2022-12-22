@@ -1,4 +1,10 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using VayCayPlannerWeb.Data.Extensions;
+
+@inject SignInManager<Subscriber> SignInManager
+@inject UserManager<Subscriber> UserManager
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,90 +33,96 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Plan a Trip
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-controller="Trips" asp-action="Create">Add a Trip</a></li>
-                                <li><a class="dropdown-item" asp-controller="Travelers" asp-action="Create">Add Traveler</a></li>
-                                <li><a class="dropdown-item" asp-controller="TravelGroups" asp-action="Create">Add Travel Group</a></li>
-                                <li><a class="dropdown-item" asp-controller="Destinations" asp-action="Create">Add Destination</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-controller="Packages" asp-action="Create">Add Packages</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Trips
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-controller="Trips" asp-action="Index">Trips</a></li>
-                                <li><a class="dropdown-item" asp-controller="Travelers" asp-action="Index">Travelers</a></li>
-                                <li><a class="dropdown-item" asp-controller="TravelGroups" asp-action="Index">Travel Groups</a></li>
-                                <li><a class="dropdown-item" asp-controller="Destinations" asp-action="Index">Destinations</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-controller="Packages" asp-action="Index">Packages</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Destinations
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-controller="Transports" asp-action="Index">Transports</a></li>
-                                <li><a class="dropdown-item" asp-controller="Lodgings" asp-action="Index">Lodgings</a></li>
-                                <li><a class="dropdown-item" asp-controller="Activities" asp-action="Index">Activities</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                My Trips
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Packages</a></li>
-                                <li><a class="dropdown-item" href="#">Destinations</a></li>
-                                <li><a class="dropdown-item" href="#">Transports</a></li>
-                                <li><a class="dropdown-item" href="#">Lodgings</a></li>
-                                <li><a class="dropdown-item" href="#">Activities</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Savings Goal</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                My Saving Plans
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">New</a></li>
-                                <li><a class="dropdown-item" href="#">Progress</a></li>
-                                <li><a class="dropdown-item" href="#">Completed</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Preparation
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Documents</a></li>
-                                <li><a class="dropdown-item" href="#">Deadlines</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Tasks</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Administration
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-controller="TransportTypes" asp-action="Index">TransportTypes</a></li>
-                                <li><a class="dropdown-item" asp-controller="Travelers" asp-action="Index">Travelers</a></li>
-                                <li><a class="dropdown-item" href="#">Travel Groups</a></li>
-                                <li><a class="dropdown-item" asp-controller="Destinations" asp-action="Index">Destinations</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" asp-controller="Packages" asp-action="Index">Packages</a></li>
-                            </ul>
-                        </li>
+                        <!-- User Profile-->
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Plan a Trip
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Trips" asp-action="Create">Add a Trip</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Travelers" asp-action="Create">Add Traveler</a></li>
+                                    <li><a class="dropdown-item" asp-controller="TravelGroups" asp-action="Create">Add Travel Group</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Destinations" asp-action="Create">Add Destination</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-controller="Packages" asp-action="Create">Add Packages</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Trips
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Trips" asp-action="Index">Trips</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Travelers" asp-action="Index">Travelers</a></li>
+                                    <li><a class="dropdown-item" asp-controller="TravelGroups" asp-action="Index">Travel Groups</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Destinations" asp-action="Index">Destinations</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-controller="Packages" asp-action="Index">Packages</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Destinations
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Transports" asp-action="Index">Transports</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Lodgings" asp-action="Index">Lodgings</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Activities" asp-action="Index">Activities</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    My Trips
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="#">Packages</a></li>
+                                    <li><a class="dropdown-item" href="#">Destinations</a></li>
+                                    <li><a class="dropdown-item" href="#">Transports</a></li>
+                                    <li><a class="dropdown-item" href="#">Lodgings</a></li>
+                                    <li><a class="dropdown-item" href="#">Activities</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Savings Goal</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    My Saving Plans
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="#">New</a></li>
+                                    <li><a class="dropdown-item" href="#">Progress</a></li>
+                                    <li><a class="dropdown-item" href="#">Completed</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Preparation
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="#">Documents</a></li>
+                                    <li><a class="dropdown-item" href="#">Deadlines</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Tasks</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Administration
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" asp-controller="TransportTypes" asp-action="Index">TransportTypes</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Travelers" asp-action="Index">Travelers</a></li>
+                                    <li><a class="dropdown-item" href="#">Travel Groups</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Destinations" asp-action="Index">Destinations</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-controller="Packages" asp-action="Index">Packages</a></li>
+                                </ul>
+                            </li>
+
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

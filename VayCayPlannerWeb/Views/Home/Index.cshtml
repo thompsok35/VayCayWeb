@@ -1,4 +1,9 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using VayCayPlannerWeb.Data.Extensions;
+@inject SignInManager<Subscriber> SignInManager
+@inject UserManager<Subscriber> UserManager
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -7,13 +12,19 @@
 
     <p>Register your email address and build your next family vacation experience with VayCay.</p>
     @*<button data-id="TravelerId" class="btn btn-primary registerBtn" asp-route-id="Id" type="button"> Create Account</button>*@
-    <button data-id="TravelerId" class="btn btn-primary createTripBtn" asp-route-id="Id" type="button">Create a Trip</button>
-    <button data-id="TravelerId" class="btn btn-primary travelGroupBtn" asp-route-id="Id" type="button">Create Travel Group</button>
-    <button data-id="TravelerId" class="btn btn-primary addTravelersBtn" asp-route-id="Id" type="button">Add Travelers</button>
+   
+    @if (SignInManager.IsSignedIn(User))
+                            {
+        <button data-id="TravelerId" class="btn btn-primary createTripBtn" asp-route-id="Id" type="button">Create a Trip</button>
+        <button data-id="TravelerId" class="btn btn-primary travelGroupBtn" asp-route-id="Id" type="button">Create Travel Group</button>
+        <button data-id="TravelerId" class="btn btn-primary addTravelersBtn" asp-route-id="Id" type="button">Add Travelers</button>
+    }
+
+
 </div>
 
-<form id="addNewTripForm" asp-action="CreateNewTrip" asp-controller="Trips">
-    <input type="hidden" asp-controller="Trips" asp-action="CreateNewTrip" id="addNewTrip" name="Id" />
+<form id="addNewTripForm" asp-action="CreateFirstTrip" asp-controller="Trips">
+    <input type="hidden" asp-controller="Trips" asp-action="CreateFirstTrip" id="addFirstTrip" name="Id" />
 </form>
 <form id="addTravelersForm" asp-action="Create" asp-controller="Travelers">
     <input type="hidden" asp-controller="Travelers" asp-action="Create" id="addTravelers" name="Id" />
@@ -55,8 +66,8 @@
             $('.createTripBtn').click(function (e) {
                 var btn = $(this);
                 var id = btn.data("id");
-                $('#addNewTrip').val(id);
-                $('#addNewTripForm').submit();
+                $('#addFirstTrip').val(id);
+                $('#addFirstTripForm').submit();
             });
 
             $('.travelGroupBtn').click(function (e)

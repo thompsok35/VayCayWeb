@@ -5,6 +5,7 @@ namespace VayCayPlannerWeb.Contracts
 {
     public interface ITravelGroupRepository
     {
-        int AddNewTravelGroup(TravelGroup travelGroup);
+        Task<int> AddNewTravelGroup(TravelGroup travelGroup);
+        Task<List<TravelGroup>> MyTravelGroups();
     }
 }

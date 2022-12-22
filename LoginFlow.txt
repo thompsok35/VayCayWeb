@@ -1,0 +1,19 @@
+unregistered
+	home landing page
+	Register button
+
+registered 
+	complete onboarding and (save progress)
+	just registered - create first trip and group
+		add travlers to your group
+		complete trip details
+		add fiirst destination
+
+	registered
+		on boarding completed
+		myViews
+
+		get primary group
+		get travelers in primary group
+
+		invite other travelers in your group to register

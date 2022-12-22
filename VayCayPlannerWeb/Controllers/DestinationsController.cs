@@ -69,11 +69,15 @@ namespace VayCayPlannerWeb.Controllers
         }
 
         // GET: Destinations/Create
-        public IActionResult Create(int? id)
+        public async Task<IActionResult> Create()
         {
-            ViewData["Trips"] = new SelectList(_destination.GetTrips(), "Id", "Name", _destination.GetTrips());
-            //List<Trip> trips = _destination.GetTrips();
-            return View();
+            var model = new Destination_vm
+            {
+                //You can pre-populate data into the fields of the view model here...
+                //The SelectList provides the source data for drop doen
+                Trips = new SelectList(_trip.MyUpcomingTrips().Result, "Id", "Name")            
+            };
+            return View(model);
         }
 
         // POST: Destinations/Create
@@ -88,7 +92,7 @@ namespace VayCayPlannerWeb.Controllers
                 _destination.CreateDestination(destination_vm);
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["TripName"] = new SelectList(_trip.Trips(), "Id", "Name");
+            ViewData["Trip"] = new SelectList(await _trip.Trips(), "Id", "Name", destination_vm.TripId);
             return View(destination_vm);
         }
 
@@ -116,7 +120,7 @@ namespace VayCayPlannerWeb.Controllers
                 
                 return RedirectToAction("TripDestinations",new { Id = tripId });
             }
-            //ViewData["TripName"] = new SelectList(_trip.Trips(), "Id", "Name");
+            ViewData["Trip"] = new SelectList(await _trip.Trips(), "Id", "Name");
             return View(newDestination);
         }
 

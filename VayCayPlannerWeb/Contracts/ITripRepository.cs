@@ -5,10 +5,12 @@ namespace VayCayPlannerWeb.Contracts
 {
     public interface ITripRepository : IGenericRepository<Trip>
     {
-        IEnumerable<Trip> Trips();
-        bool CreateNewTrip(CreateNewTrip_vm viewModel);
+        Task<List<Trip>> Trips();
+        Task<List<Trip>> MyUpcomingTrips();
+        Task<List<Trip>> MyTrips();
+        Task<bool> CreateNewTrip(CreateFirstTrip_vm viewModel);
         Trip GetTripById(int Id);
-        bool CreateTrip(Trip_vm trip_Vm);
+        Task<bool> CreateTrip(CreateTrip_vm viewModel);
         bool UpdateTrip(int tripId, Trip_vm viewModel);
         bool UpdateDestinationCount(int tripId);
     }

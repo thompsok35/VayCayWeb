@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using VayCayPlannerWeb.Data.Models;
 
 namespace VayCayPlannerWeb.Models.ViewModels
@@ -7,9 +8,11 @@ namespace VayCayPlannerWeb.Models.ViewModels
     {
         [Display(Name = "Trip Name")]
         public string? TripName { get; set; }
+        
+        [Display(Name = "Your Trips")]
         public int TripId { get; set; }
-
-        public List<Trip>? Trips { get; set; }
+        //Source: TripRepository.GetUpcomingTrips()
+        public SelectList? Trips { get; set; }
 
         [Display(Name = "City Name")]
         [Required]

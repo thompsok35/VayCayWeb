@@ -7,6 +7,7 @@ using System.Linq;
 using VayCayPlannerWeb.Models.ViewModels;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
 
 namespace VayCayPlannerWeb.Data.Repositories
 {
@@ -25,6 +26,7 @@ namespace VayCayPlannerWeb.Data.Repositories
             _mapper = mapper;
         }
 
+
         public Destination GetTripDestination(int id)
         {
             var destination = _dbContext.Destinations
@@ -41,8 +43,9 @@ namespace VayCayPlannerWeb.Data.Repositories
 
         public List<Trip> GetTrips()
         {
-            var result = _dbContext.Trips.ToList();
-            return result;
+            return _tripRepository.MyUpcomingTrips().Result;
+            //var result = _dbContext.Trips.ToList();
+            //return result;
         }
 
         public Destination GetDestinationById(int Id)
@@ -165,7 +168,7 @@ namespace VayCayPlannerWeb.Data.Repositories
                     CityName = item.CityName,
                     CountryName = item.CountryName,
                     DepartureDate = item.DepartureDate,
-                    Duration = item.Duration,
+                    Duration = (item.DepartureDate - item.ArrivalDate).Value.Days,
                     Id = item.Id,
                     isMealsIncluded = item.isMealsIncluded,
                     PackageId = item.PackageId,
